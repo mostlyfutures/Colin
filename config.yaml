@@ -1,0 +1,102 @@
+# Institutional-Grade Signal Scoring Bot Configuration
+
+# Trading Symbols
+symbols:
+  - "ETHUSDT"
+  - "BTCUSDT"
+
+# API Configuration
+apis:
+  binance:
+    base_url: "https://fapi.binance.com"
+    testnet: false  # Set to true for testing
+  coinglass:
+    base_url: "https://www.coinglass.com/api/futures"
+    rate_limit: 60  # requests per minute
+
+# Session Configuration (UTC)
+sessions:
+  asian:
+    start: "00:00"
+    end: "09:00"
+    weight: 1.0
+  london:
+    start: "07:00"
+    end: "16:00"
+    weight: 1.2
+  new_york:
+    start: "12:00"
+    end: "22:00"
+    weight: 1.2
+  london_ny_overlap:
+    start: "12:00"
+    end: "16:00"
+    weight: 1.5  # Highest conviction window
+
+# ICT Structure Detection
+ict:
+  fair_value_gap:
+    min_gap_size: 0.001  # 0.1% minimum gap
+    lookback_periods: 50
+  order_block:
+    min_candle_size: 0.002  # 0.2% minimum candle
+    lookback_periods: 20
+  break_of_structure:
+    lookback_periods: 10
+
+# Scoring Weights
+scoring:
+  weights:
+    liquidity_proximity: 0.25
+    ict_confluence: 0.25
+    killzone_alignment: 0.15
+    order_flow_delta: 0.20
+    volume_oi_confirmation: 0.15
+
+  thresholds:
+    high_confidence: 80
+    medium_confidence: 60
+    low_confidence: 40
+
+# Order Flow Analysis
+order_flow:
+  order_book:
+    depth_levels: 20  # Number of levels to analyze
+    imbalance_threshold: 0.7  # 70% imbalance threshold
+  trade_delta:
+    lookback_minutes: 15
+    volume_threshold: 1000000  # $1M minimum volume
+
+# Liquidation Analysis
+liquidations:
+  heatmap:
+    timeframes: ["1h", "4h", "24h"]
+    min_density_threshold: 1000000  # $1M minimum liquidation density
+  proximity_threshold: 0.005  # 0.5% proximity to liquidation zones
+
+# Risk Management
+risk:
+  max_position_size: 0.02  # 2% max position size
+  stop_loss_buffer: 0.002  # 0.2% buffer beyond structure
+  volatility_threshold: 0.03  # 3% volatility threshold
+
+# Output Configuration
+output:
+  format: "json"  # json, text, or both
+  include_rationale: true
+  max_rationale_points: 3
+  include_stop_loss: true
+  include_volatility_warning: true
+
+# Logging
+logging:
+  level: "INFO"
+  file: "logs/colin_bot.log"
+  max_size: "10MB"
+  backup_count: 5
+
+# Development
+development:
+  test_mode: true
+  mock_api_responses: true
+  save_intermediate_data: false

@@ -1,0 +1,19 @@
+{
+  "name": "colinbot",
+  "version": "1.0.0",
+  "description": "A trading bot project created using archon MCP",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "test": "jest",
+    "dev": "nodemon src/index.js"
+  },
+  "keywords": ["trading", "bot", "archon"],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {},
+  "devDependencies": {
+    "jest": "^29.0.0",
+    "nodemon": "^3.0.0"
+  }
+}
