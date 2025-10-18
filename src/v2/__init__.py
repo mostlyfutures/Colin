@@ -26,9 +26,23 @@ __version__ = "2.0.0"
 __author__ = "Colin Trading Bot Team"
 
 from .ai_engine import MLModelBase, FeatureEngineerBase, MLPipelineBase
+from .risk_system import (
+    RealTimeRiskController, RiskDecision, PositionMonitor, DrawdownController,
+    VaRCalculator, CorrelationAnalyzer, StressTester,
+    PreTradeChecker, ComplianceMonitor
+)
 
 __all__ = [
     "MLModelBase",
     "FeatureEngineerBase",
-    "MLPipelineBase"
+    "MLPipelineBase",
+    "RealTimeRiskController",
+    "RiskDecision",
+    "PositionMonitor",
+    "DrawdownController",
+    "VaRCalculator",
+    "CorrelationAnalyzer",
+    "StressTester",
+    "PreTradeChecker",
+    "ComplianceMonitor"
 ]
