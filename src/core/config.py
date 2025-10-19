@@ -63,7 +63,7 @@ class RiskConfig(BaseModel):
 
 class OutputConfig(BaseModel):
     """Output configuration."""
-    format: str = Field(regex="^(json|text|both)$")
+    format: str = Field(pattern="^(json|text|both)$")
     include_rationale: bool = True
     max_rationale_points: int = Field(gt=0, le=10)
     include_stop_loss: bool = True
@@ -72,7 +72,7 @@ class OutputConfig(BaseModel):
 
 class LoggingConfig(BaseModel):
     """Logging configuration."""
-    level: str = Field(regex="^(DEBUG|INFO|WARNING|ERROR|CRITICAL)$")
+    level: str = Field(pattern="^(DEBUG|INFO|WARNING|ERROR|CRITICAL)$")
     file: Optional[str] = None
     max_size: Optional[str] = None
     backup_count: Optional[int] = None

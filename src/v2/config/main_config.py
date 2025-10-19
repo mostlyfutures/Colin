@@ -15,6 +15,7 @@ from loguru import logger
 from .risk_config import RiskSystemConfig
 from .ai_config import AIModelConfig
 from .execution_config import ExecutionConfig
+from ..data_sources.config import MarketDataConfig
 
 
 @dataclass
@@ -82,6 +83,7 @@ class MainV2Config:
     risk_system: RiskSystemConfig = field(default_factory=RiskSystemConfig)
     ai_models: AIModelConfig = field(default_factory=AIModelConfig)
     execution_engine: ExecutionConfig = field(default_factory=ExecutionConfig)
+    market_data: MarketDataConfig = field(default_factory=MarketDataConfig)
 
     # Trading parameters
     trading_enabled: bool = True
