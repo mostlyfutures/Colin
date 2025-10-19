@@ -41,7 +41,7 @@ setup(
     ],
     python_requires=">=3.8",
     install_requires=read_requirements(),
-    extras_require={
+  extras_require={
         "dev": [
             "pytest>=7.0.0",
             "pytest-asyncio>=0.21.0",
@@ -55,9 +55,16 @@ setup(
             "sphinx>=5.0.0",
             "sphinx-rtd-theme>=1.0.0",
         ],
+        "cli": [
+            "click>=8.1.0",
+            "rich>=13.0.0",
+            "keyring>=24.0.0",
+            "cryptography>=41.0.0",
+        ],
     },
     entry_points={
         "console_scripts": [
+            "colin=colin_bot.cli.main:main",
             "colin-bot=colin_bot.v2.main:main",
             "colin-bot-v1=colin_bot.v1.main:main",
             "colin-bot-api=colin_bot.v2.api_gateway.rest_api:main",
@@ -68,6 +75,8 @@ setup(
         "colin_bot": [
             "config/*.yaml",
             "config/*.json",
+            "cli/*.yaml",
+            "cli/*.json",
         ],
     },
     zip_safe=False,
