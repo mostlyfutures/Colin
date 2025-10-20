@@ -89,7 +89,7 @@ class SessionAnalyzer:
             elif session_name == "new_york":
                 sessions[SessionType.NEW_YORK] = session_info
             elif session_name == "london_ny_overlap":
-                sessions[SessionType.LONDON_NY_OVERLAP = session_info
+                sessions[SessionType.LONDON_NY_OVERLAP] = session_info
 
         return sessions
 

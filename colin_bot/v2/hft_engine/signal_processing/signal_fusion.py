@@ -14,9 +14,9 @@ from dataclasses import dataclass, field
 from enum import Enum
 
 from ..utils.data_structures import (
-    TradingSignal, SignalDirection, SignalStrength, OFISignal, BookSkewSignal
+    TradingSignal, SignalDirection, OFISignal, BookSkewSignal
 )
-from ..utils.math_utils import calculate_zscore, weighted_average
+from ..utils.math_utils import calculate_zscore, calculate_weighted_average
 from ..utils.performance import profile_async_hft_operation, LatencyTracker
 
 
@@ -54,7 +54,7 @@ class FusionSignal:
     symbol: str
     direction: SignalDirection
     confidence: float
-    strength: SignalStrength
+    strength: float
     fusion_method: FusionMethod
     component_signals: List[Dict] = field(default_factory=list)
     consensus_score: float = 0.0
@@ -341,7 +341,7 @@ class SignalFusionEngine:
             return None
 
         # Calculate weighted average
-        weighted_direction = weighted_average(direction_values, weights)
+        weighted_direction = calculate_weighted_average(direction_values, weights)
         final_direction = self._numeric_to_direction(weighted_direction)
 
         # Calculate confidence
@@ -561,7 +561,7 @@ class SignalFusionEngine:
         # Normalize by max possible conflicts
         return (unique_directions - 1) / 2.0
 
-    def _determine_strength(self, confidence: float, signal_magnitude: float) -> SignalStrength:
+    def _determine_strength(self, confidence: float, signal_magnitude: float) -> float:
         """Determine signal strength from confidence and magnitude."""
         combined_strength = (confidence + abs(signal_magnitude)) / 2.0
 

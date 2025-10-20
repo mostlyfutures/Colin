@@ -231,7 +231,7 @@ class OrderFlowAnalyzer:
             logger.error(f"Failed to analyze trade delta for {symbol}: {e}")
             raise
 
-    async def综合分析(self, symbol: str, binance_adapter: BinanceAdapter) -> OrderFlowMetrics:
+    async def comprehensive_analysis(self, symbol: str, binance_adapter: BinanceAdapter) -> OrderFlowMetrics:
         """
         Perform comprehensive order flow analysis.
 

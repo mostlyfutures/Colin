@@ -13,7 +13,7 @@ from enum import Enum
 import logging
 from collections import deque
 
-from ..utils.data_structures import TradingSignal, SignalDirection, SignalStrength
+from ..utils.data_structures import TradingSignal, SignalDirection
 from ..utils.math_utils import calculate_volatility, calculate_zscore, exponential_moving_average
 from ..utils.performance import profile_async_hft_operation, LatencyTracker
 

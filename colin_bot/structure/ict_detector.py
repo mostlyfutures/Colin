@@ -40,20 +40,34 @@ class ICTStructure:
 @dataclass
 class FairValueGap(ICTStructure):
     """Fair Value Gap structure."""
-    top: float
-    bottom: float
-    midline: float
-    size: float
+    type: StructureType
+    timestamp: datetime
+    price_level: float
+    confidence: float
+    details: Dict[str, Any]
+    is_valid: bool = True
+    timeframe: str = "1h"
+    top: float = 0.0
+    bottom: float = 0.0
+    midline: float = 0.0
+    size: float = 0.0
     fill_status: str = "unfilled"  # unfilled, partially_filled, filled
 
 
 @dataclass
 class OrderBlock(ICTStructure):
     """Order Block structure."""
-    candle_high: float
-    candle_low: float
-    candle_close: float
-    candle_volume: float
+    type: StructureType
+    timestamp: datetime
+    price_level: float
+    confidence: float
+    details: Dict[str, Any]
+    is_valid: bool = True
+    timeframe: str = "1h"
+    candle_high: float = 0.0
+    candle_low: float = 0.0
+    candle_close: float = 0.0
+    candle_volume: float = 0.0
     side: str = "bullish"  # bullish, bearish
     is_fresh: bool = True
 
@@ -61,9 +75,16 @@ class OrderBlock(ICTStructure):
 @dataclass
 class BreakOfStructure(ICTStructure):
     """Break of Structure structure."""
-    broken_level: float
-    break_candle_high: float
-    break_candle_low: float
+    type: StructureType
+    timestamp: datetime
+    price_level: float
+    confidence: float
+    details: Dict[str, Any]
+    is_valid: bool = True
+    timeframe: str = "1h"
+    broken_level: float = 0.0
+    break_candle_high: float = 0.0
+    break_candle_low: float = 0.0
     side: str = "bullish"  # bullish (higher high), bearish (lower low)
     retest_level: Optional[float] = None
 

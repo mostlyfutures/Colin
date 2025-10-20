@@ -21,8 +21,15 @@ import numpy as np
 import pandas as pd
 from loguru import logger
 
-from .liquidity_aggregator import LiquidityAggregator
-from .fee_optimizer import FeeOptimizer
+# from .liquidity_aggregator import LiquidityAggregator
+# from .fee_optimizer import FeeOptimizer
+
+# Temporary stubs for missing modules
+class LiquidityAggregator:
+    pass
+
+class FeeOptimizer:
+    pass
 
 
 class OrderSide(Enum):
