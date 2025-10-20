@@ -1,0 +1,42 @@
+{
+  "timestamp": 1760977419.375146,
+  "total_tests": 7,
+  "passed_tests": 0,
+  "results": [
+    {
+      "test": "enhanced_bot_initialization",
+      "success": false,
+      "error": "argument should be a str or an os.PathLike object where __fspath__ returns a str, not 'ConfigManager'"
+    },
+    {
+      "test": "hft_status",
+      "success": false,
+      "error": "argument should be a str or an os.PathLike object where __fspath__ returns a str, not 'ConfigManager'"
+    },
+    {
+      "test": "single_symbol_analysis",
+      "success": false,
+      "error": "argument should be a str or an os.PathLike object where __fspath__ returns a str, not 'ConfigManager'"
+    },
+    {
+      "test": "multiple_symbol_analysis",
+      "success": false,
+      "error": "argument should be a str or an os.PathLike object where __fspath__ returns a str, not 'ConfigManager'"
+    },
+    {
+      "test": "pure_hft_signals",
+      "success": false,
+      "error": "argument should be a str or an os.PathLike object where __fspath__ returns a str, not 'ConfigManager'"
+    },
+    {
+      "test": "performance_comparison",
+      "success": false,
+      "error": "argument should be a str or an os.PathLike object where __fspath__ returns a str, not 'ConfigManager'"
+    },
+    {
+      "test": "error_handling",
+      "success": false,
+      "error": "argument should be a str or an os.PathLike object where __fspath__ returns a str, not 'ConfigManager'"
+    }
+  ]
+}

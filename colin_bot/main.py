@@ -8,6 +8,7 @@ import asyncio
 import argparse
 import sys
 import json
+import time
 from datetime import datetime
 from pathlib import Path
 from typing import List, Dict, Any
@@ -15,21 +16,40 @@ from loguru import logger
 
 from .core.config import ConfigManager
 from .engine.institutional_scorer import InstitutionalScorer
+from .engine.enhanced_institutional_scorer import EnhancedInstitutionalScorer
 
 
 class ColinTradingBot:
     """Main trading bot class."""
 
-    def __init__(self, config_path: str = None):
+    def __init__(self, config_path: str = None, enable_hft: bool = True):
         """
         Initialize the trading bot.
 
         Args:
             config_path: Path to configuration file
+            enable_hft: Whether to enable HFT signal integration
         """
         self.config_manager = ConfigManager(config_path)
         self.config = self.config_manager.config
-        self.scorer = InstitutionalScorer(self.config_manager)
+        self.enable_hft = enable_hft
+
+        # Initialize enhanced scorer with HFT integration
+        if enable_hft:
+            logger.info("Initializing Colin Trading Bot with HFT integration")
+            try:
+                self.scorer = EnhancedInstitutionalScorer(self.config_manager, enable_hft=True)
+                self.bot_type = "enhanced_with_hft"
+            except Exception as e:
+                logger.warning(f"Failed to initialize HFT integration: {e}")
+                logger.info("Falling back to conventional institutional scorer")
+                self.scorer = InstitutionalScorer(self.config_manager)
+                self.bot_type = "conventional"
+        else:
+            logger.info("Initializing Colin Trading Bot (conventional mode)")
+            self.scorer = InstitutionalScorer(self.config_manager)
+            self.bot_type = "conventional"
+
         self._setup_logging()
 
     def _setup_logging(self):
@@ -271,6 +291,116 @@ class ColinTradingBot:
         except Exception as e:
             logger.error(f"Continuous analysis failed: {e}")
             raise
+
+    async def get_hft_status(self) -> Dict[str, Any]:
+        """
+        Get HFT integration status and metrics.
+
+        Returns:
+            HFT status information
+        """
+        if not self.enable_hft:
+            return {
+                'hft_enabled': False,
+                'bot_type': self.bot_type,
+                'message': 'HFT integration is disabled'
+            }
+
+        try:
+            # Check if scorer has HFT capabilities
+            if hasattr(self.scorer, 'get_enhanced_metrics'):
+                enhanced_metrics = self.scorer.get_enhanced_metrics()
+
+                # Add bot-specific information
+                status = {
+                    'hft_enabled': True,
+                    'bot_type': self.bot_type,
+                    'enhanced_metrics': enhanced_metrics,
+                    'timestamp': datetime.now().isoformat()
+                }
+
+                # Add health check if available
+                if hasattr(self.scorer, 'health_check'):
+                    health = await self.scorer.health_check()
+                    status['health_check'] = health
+
+                return status
+            else:
+                return {
+                    'hft_enabled': False,
+                    'bot_type': self.bot_type,
+                    'message': 'HFT components not initialized - using conventional scorer'
+                }
+
+        except Exception as e:
+            logger.error(f"Error getting HFT status: {e}")
+            return {
+                'hft_enabled': self.enable_hft,
+                'bot_type': self.bot_type,
+                'error': str(e),
+                'message': 'Error retrieving HFT status'
+            }
+
+    async def test_hft_integration(self, symbol: str = "BTCUSDT") -> Dict[str, Any]:
+        """
+        Test HFT integration with a sample symbol.
+
+        Args:
+            symbol: Symbol to test with
+
+        Returns:
+            Test results
+        """
+        if not self.enable_hft:
+            return {
+                'success': False,
+                'message': 'HFT integration is disabled'
+            }
+
+        try:
+            logger.info(f"Testing HFT integration with {symbol}")
+
+            # Test enhanced analysis
+            start_time = time.time()
+            signal = await self.scorer.analyze_symbol(symbol, time_horizon="1h")
+            analysis_time = time.time() - start_time
+
+            # Check if signal has HFT components
+            has_hft_components = hasattr(signal, 'institutional_factors') and any(
+                key.startswith('hft_') for key in signal.institutional_factors.keys()
+            )
+
+            result = {
+                'success': True,
+                'symbol': symbol,
+                'signal_generated': True,
+                'has_hft_components': has_hft_components,
+                'analysis_time_seconds': round(analysis_time, 3),
+                'signal_direction': signal.direction,
+                'signal_confidence': signal.confidence_level,
+                'long_confidence': signal.long_confidence,
+                'short_confidence': signal.short_confidence,
+                'institutional_factors': signal.institutional_factors,
+                'timestamp': datetime.now().isoformat()
+            }
+
+            if has_hft_components:
+                result['hft_factors'] = {
+                    k: v for k, v in signal.institutional_factors.items()
+                    if k.startswith('hft_')
+                }
+
+            logger.info(f"HFT integration test successful for {symbol}")
+            return result
+
+        except Exception as e:
+            logger.error(f"HFT integration test failed: {e}")
+            return {
+                'success': False,
+                'symbol': symbol,
+                'error': str(e),
+                'timestamp': datetime.now().isoformat()
+            }
 
 
 async def main():
