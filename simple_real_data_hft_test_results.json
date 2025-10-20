@@ -1,0 +1,46 @@
+{
+  "timestamp": 1760993488.6923132,
+  "total_tests": 5,
+  "passed_tests": 3,
+  "success_rate": 60.0,
+  "total_time": 2.379091262817383,
+  "results": [
+    {
+      "test": "direct_api_connection",
+      "success": true,
+      "exchange": "CoinGecko",
+      "status_code": 200
+    },
+    {
+      "test": "real_order_book_fetch",
+      "success": true,
+      "exchange": "Binance",
+      "symbol": "BTCUSDT",
+      "bid_levels": 10,
+      "ask_levels": 10,
+      "best_bid": 110953.0,
+      "best_ask": 110953.01,
+      "spread": 0.00999999999476131
+    },
+    {
+      "test": "hft_signal_generation_real_data",
+      "success": true,
+      "ofi_direction": null,
+      "ofi_confidence": null,
+      "skew_direction": null,
+      "skew_confidence": null,
+      "fused_direction": null,
+      "fused_confidence": null
+    },
+    {
+      "test": "ofi_calculation_real_data",
+      "success": false,
+      "error": "No OFI result returned - insufficient data"
+    },
+    {
+      "test": "book_skew_analysis_real_data",
+      "success": false,
+      "error": "No skew result returned"
+    }
+  ]
+}

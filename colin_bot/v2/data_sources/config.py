@@ -95,6 +95,15 @@ class MarketDataConfig:
                 priority=2,
                 retry_attempts=3
             ),
+            DataSource.HYPERLIQUID: DataSourceConfig(
+                name="Hyperliquid",
+                base_url="https://api.hyperliquid.xyz",
+                rate_limit_per_minute=100,
+                timeout_seconds=10,
+                enabled=True,
+                priority=1,
+                retry_attempts=3
+            ),
             DataSource.CRYPTOCOMPARE: DataSourceConfig(
                 name="CryptoCompare",
                 base_url="https://min-api.cryptocompare.com/data",
@@ -145,6 +154,10 @@ class MarketDataConfig:
         if os.getenv("CRYPTOCOMPARE_API_KEY"):
             if DataSource.CRYPTOCOMPARE in self.sources:
                 self.sources[DataSource.CRYPTOCOMPARE].api_key = os.getenv("CRYPTOCOMPARE_API_KEY")
+
+        if os.getenv("HYPERLIQUID_API_KEY"):
+            if DataSource.HYPERLIQUID in self.sources:
+                self.sources[DataSource.HYPERLIQUID].api_key = os.getenv("HYPERLIQUID_API_KEY")
 
         # Cache settings
         if os.getenv("MARKET_DATA_CACHE_TTL"):

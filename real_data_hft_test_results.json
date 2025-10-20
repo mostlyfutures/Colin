@@ -1,0 +1,49 @@
+{
+  "timestamp": 1760989989.4876852,
+  "total_tests": 7,
+  "passed_tests": 2,
+  "results": [
+    {
+      "test": "real_data_connector_initialization",
+      "success": true,
+      "exchange": "binance",
+      "symbols": [
+        "BTCUSDT",
+        "ETHUSDT",
+        "SOLUSDT"
+      ],
+      "websocket_enabled": true
+    },
+    {
+      "test": "exchange_connection",
+      "success": true,
+      "connected": false,
+      "exchange": "binance"
+    },
+    {
+      "test": "real_order_book_data",
+      "success": false,
+      "error": "RealDataConnector._update_order_book() missing 2 required positional arguments: 'symbol' and 'data'"
+    },
+    {
+      "test": "real_time_signal_generation",
+      "success": false,
+      "error": "RealDataConnector._update_order_book() missing 2 required positional arguments: 'symbol' and 'data'"
+    },
+    {
+      "test": "real_ofi_calculation",
+      "success": false,
+      "error": "RealDataConnector._update_order_book() missing 2 required positional arguments: 'symbol' and 'data'"
+    },
+    {
+      "test": "real_book_skew_analysis",
+      "success": false,
+      "error": "RealDataConnector._update_order_book() missing 2 required positional arguments: 'symbol' and 'data'"
+    },
+    {
+      "test": "performance_metrics",
+      "success": false,
+      "error": "RealDataConnector._update_order_book() missing 2 required positional arguments: 'symbol' and 'data'"
+    }
+  ]
+}

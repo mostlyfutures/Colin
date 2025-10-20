@@ -16,6 +16,7 @@ class DataSource(str, Enum):
     KRAKEN = "kraken"
     CRYPTOCOMPARE = "cryptocompare"
     ALTERNATIVE_ME = "alternative_me"
+    HYPERLIQUID = "hyperliquid"
 
 
 class DataQuality(str, Enum):

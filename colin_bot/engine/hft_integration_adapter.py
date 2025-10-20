@@ -109,10 +109,20 @@ class HFTIntegrationAdapter:
         """Setup mock data generator for testing purposes."""
         try:
             from colin_bot.v2.hft_engine.data_ingestion.connectors.mock_connector import MockDataConnector
-            self.mock_connector = MockDataConnector(self.config_manager)  # Pass config manager
-            logger.info("✅ Mock data connector initialized")
-        except ImportError:
-            logger.warning("⚠️ Mock data connector not available")
+            from colin_bot.v2.hft_engine.data_ingestion.connectors.real_data_connector import RealDataConnector
+
+            # Check if real data should be used
+            use_real_data = getattr(self.config_manager.config, 'use_real_data', False)
+
+            if use_real_data:
+                self.mock_connector = RealDataConnector(self.config_manager)
+                logger.info("✅ Real data connector initialized")
+            else:
+                self.mock_connector = MockDataConnector(self.config_manager)
+                logger.info("✅ Mock data connector initialized")
+
+        except ImportError as e:
+            logger.warning(f"⚠️ Data connector import error: {e}")
             self.mock_connector = None
 
     def is_hft_enabled(self) -> bool:

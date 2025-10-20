@@ -1,34 +1,32 @@
-# Colin Trading Bot v2.0 - AI-Powered Institutional Trading System Dependencies
-
 # Core Data Processing
 pandas>=2.0.0
 numpy>=1.24.0
 pytz>=2023.3
 
-# API Clients
+# Exchange Connectivity
 ccxt>=4.0.0
 requests>=2.31.0
 aiohttp>=3.8.0
 
-# Configuration & Environment
+# Configuration
 pydantic>=2.0.0
 python-dotenv>=1.0.0
 PyYAML>=6.0
 
-# Financial Analysis
+# Technical Analysis
 TA-Lib>=0.4.25
 scipy>=1.10.0
 scikit-learn>=1.3.0
 
-# Async & Performance
+# Async Operations
 asyncio-mqtt>=0.13.0
 uvloop>=0.17.0
 
-# Logging & Monitoring
+# Logging & CLI
 loguru>=0.7.0
 rich>=13.0.0
 
-# Testing & Development
+# Testing
 pytest>=7.4.0
 pytest-asyncio>=0.21.0
 pytest-mock>=3.11.0
@@ -36,49 +34,43 @@ black>=23.0.0
 flake8>=6.0.0
 mypy>=1.5.0
 
-# Web Framework (for future API endpoints)
+# API Framework
 fastapi>=0.100.0
 uvicorn>=0.23.0
 
-# Database (for storing historical data)
+# Database
 sqlalchemy>=2.0.0
 alembic>=1.11.0
 
-# Utilities
+# Additional
 python-dateutil>=2.8.0
 websocket-client>=1.6.0
 
-# ==========================================
-# AI/ML DEPENDENCIES (V2 ADDITIONS)
-# ==========================================
-
-# Deep Learning Frameworks
+# Deep Learning (Compatible with Python 3.13)
 torch>=2.1.0
 torchvision>=0.16.0
 tensorflow>=2.15.0
 keras>=2.15.0
 
-# Model Serving & Optimization
+# Model Optimization
 onnx>=1.15.0
 onnxruntime>=1.16.0
-tensorrt>=8.6.0
 
-# Feature Engineering & Data Processing
+# Feature Engineering
 featuretools>=1.31.0
 mlflow>=2.8.0
 optuna>=3.4.0
 
-# Time Series Analysis
+# Time Series
 statsmodels>=0.14.0
 prophet>=1.1.5
-sktime>=0.29.0
 
-# Advanced ML Models
+# Gradient Boosting
 xgboost>=2.0.2
 lightgbm>=4.1.0
 catboost>=1.2.2
 
-# Natural Language Processing (for sentiment analysis)
+# NLP
 transformers>=4.35.0
 tokenizers>=0.15.0
 nltk>=3.8.1
@@ -88,23 +80,22 @@ ray[rllib]>=2.8.0
 gymnasium>=0.29.0
 stable-baselines3>=2.2.1
 
-# Model Explainability
+# Explainability
 shap>=0.44.0
 lime>=0.2.0
 eli5>=0.13.0
 
-# Data Storage & Processing
+# Data Storage
 redis>=5.0.1
 pymongo>=4.6.0
 influxdb-client>=1.38.0
 parquet>=1.3.1
 pyarrow>=14.0.0
 
-# API & Rate Limiting
-redis>=5.0.1
+# Caching
 aioredis>=2.0.1
 
-# Security & Authentication
+# Security
 pyotp>=2.9.0
 cryptography>=41.0.7
 passlib>=1.7.4
@@ -114,49 +105,12 @@ python-jose>=3.3.0
 hydra-core>=1.3.2
 omegaconf>=2.3.0
 
-# Monitoring & Observability
+# Monitoring
 prometheus-client>=0.19.0
 grafana-api>=1.0.3
-opentelemetry-api>=1.21.0
-opentelemetry-sdk>=1.21.0
+opentelemetry-api>=1.38.0
+opentelemetry-sdk>=1.38.0
 
-# Network & FIX Protocol
-python-fix-protocol>=1.0.0
-websockets>=12.0
-
-# Mathematical Computing
-numba>=0.58.0
-cython>=3.0.2
-
-# Risk Management & Analytics
-pyfolio>=0.9.0
-empyrical>=0.5.5
-zipline-reloaded>=2.2.0
-
-# Market Data
-yfinance>=0.2.28
-alpha-vantage>=2.3.1
-
-# Testing & Quality Assurance
-locust>=2.17.0
-bandit>=1.7.5
-safety>=2.3.5
-pip-audit>=2.6.1
-
-# Performance & Profiling
-py-spy>=0.3.14
-memory-profiler>=0.61.0
-line-profiler>=4.1.1
-
-# Documentation
-sphinx>=7.2.0
-sphinx-rtd-theme>=1.3.0
-
-# Development Tools
-jupyter>=1.0.0
-ipython>=8.17.0
-notebook>=7.0.6
-
-# Deployment
-docker>=6.1.3
-kubernetes>=28.1.0
+# FIX Protocol - Use one of these alternatives instead of python-fix-protocol
+# quickfix>=1.15.1  # Uncomment if you need FIX protocol
+# simplefix>=1.0.16  # Lighter alternative for FIX protocol

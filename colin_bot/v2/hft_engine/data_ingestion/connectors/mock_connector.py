@@ -42,6 +42,11 @@ class MockDataConnector:
         self.order_book = self._initialize_order_book()
         self.trade_id_counter = 1000
 
+    async def initialize(self):
+        """Initialize the mock data connector."""
+        # No special initialization needed for mock connector
+        pass
+
     def _initialize_order_book(self) -> OrderBook:
         """Initialize order book with realistic levels."""
         bids = []
@@ -285,6 +290,22 @@ class MockDataConnector:
 
     def get_current_order_book(self) -> OrderBook:
         """Get current order book snapshot."""
+        return self.order_book
+
+    async def generate_order_book(self, symbol: str = None) -> OrderBook:
+        """
+        Generate order book data (for compatibility with RealDataConnector).
+
+        Args:
+            symbol: Trading symbol (optional, uses config symbol if not provided)
+
+        Returns:
+            OrderBook: Current order book snapshot
+        """
+        # Update order book to simulate real-time changes
+        self._update_order_book()
+        self.order_book.timestamp = datetime.now(timezone.utc)
+
         return self.order_book
 
     def get_status(self) -> Dict[str, any]:

@@ -159,6 +159,49 @@ src/v2/
 - Metrics collection with Prometheus-compatible format
 - Alert rule engine with configurable thresholds
 
+### Phase 5: High-Frequency Trading (HFT) Engine
+
+**Location**: `colin_bot/v2/hft_engine/`
+
+**Core Components**:
+- **Signal Processing** (`signal_processing/`):
+  - `ofi_calculator.py`: Order Flow Imbalance calculator using Hawkes processes
+  - `book_skew_analyzer.py`: Order book skew analysis with dynamic thresholds
+  - `signal_fusion.py`: Multi-signal fusion engine for enhanced confidence
+- **Data Ingestion** (`data_ingestion/`):
+  - `market_data_manager.py`: Real-time market data management
+  - `connectors/mock_connector.py`: Mock data connector for testing
+  - `connectors/real_data_connector.py`: Live exchange data connector
+  - `connectors/hyperliquid_connector.py`: **Hyperliquid WebSocket connector** 🆕
+- **Utilities** (`utils/`):
+  - `data_structures.py`: HFT-specific data structures (OrderBook, OFISignal, etc.)
+  - `math_utils.py`: Mathematical utilities (Hawkes processes, skew calculations)
+  - `performance.py`: Performance tracking and latency monitoring
+
+**Key Features**:
+- Order Flow Imbalance (OFI) calculation using Hawkes processes
+- Real-time order book skew analysis with dynamic thresholds
+- Multi-signal fusion for enhanced trading confidence
+- Sub-10ms signal generation latency
+- Support for multiple exchanges (Binance, Kraken, Bybit, OKX, **Hyperliquid** 🆕)
+- Circuit breaker patterns for risk management
+- Real-time market data processing with WebSocket support
+- **Hyperliquid API integration with HMAC authentication** 🆕
+
+**Architecture Patterns**:
+- Async/await patterns for high-frequency processing
+- Event-driven architecture for real-time data handling
+- Modular signal processing pipeline
+- Performance monitoring with microsecond precision
+- Graceful fallback to mock data for testing
+- **Standardized adapter pattern for new exchanges** 🆕
+
+**Integration Points**:
+- `colin_bot/engine/hft_integration_adapter.py`: Main bot integration
+- `colin_bot/engine/hft_signal_bridge.py`: Signal enhancement bridge
+- `colin_bot/engine/enhanced_institutional_scorer.py`: HFT-enhanced scoring
+- **`colin_bot/v2/data_sources/adapters/hyperliquid_adapter.py`: Hyperliquid REST API integration** 🆕
+
 ## Key Commands and Workflows
 
 ### System Running Commands
@@ -173,9 +216,115 @@ python -m src.v2.main --mode development
 # Production Mode (Live trading with full features)
 python -m src.v2.main --mode production
 
+# Main Bot with HFT Integration
+python -m colin_bot.main --enable-hft
+
 # Start API Servers
 python -m src.v2.api_gateway.rest_api.run
 python -m src.v2.api_gateway.websocket_api.run
+```
+
+### HFT System Commands
+
+```bash
+# Standalone HFT Demo (Mock Data)
+python standalone_hft_demo.py
+
+# HFT Demo with Specific Symbols and Duration
+python standalone_hft_demo.py --symbols BTC/USDT,ETH/USDT --duration 120
+
+# Simple Real Data HFT Test
+python simple_real_data_hft_test.py
+
+# Enhanced Real Data HFT with Hyperliquid
+python enhanced_real_data_hft.py
+
+# Hyperliquid Integration Test
+python test_hyperliquid_integration.py
+
+# Hyperliquid Working Demo
+python test_hyperliquid_working.py
+
+# HFT Integration Test
+python -c "
+import asyncio
+from colin_bot.engine.hft_integration_adapter import HFTIntegrationAdapter
+
+async def test_hft():
+    # Mock config for testing
+    class MockConfig:
+        def __init__(self):
+            self.base_price = 50000.0
+            self.hft = MockHFTConfig()
+
+    adapter = HFTIntegrationAdapter(MockConfig(), enable_hft=True)
+    signal = await adapter.generate_hft_signal('BTCUSDT')
+    print(f'HFT Signal: {signal.direction} (confidence: {signal.confidence}%)')
+
+asyncio.run(test_hft())
+"
+```
+
+### Hyperliquid Integration Commands 🆕
+
+```bash
+# Test Hyperliquid Market Data
+export HYPERLIQUID_API_KEY="your_secret_key_here"
+python demo_hyperliquid_integration.py
+
+# Hyperliquid with Authentication Test
+python test_hyperliquid_with_auth.py
+
+# Comprehensive Hyperliquid Integration Test
+python test_hyperliquid_working.py
+
+# Basic Hyperliquid Usage Example
+python -c "
+import asyncio
+import os
+from colin_bot.v2.data_sources.adapters import HyperliquidAdapter
+from colin_bot.v2.data_sources.config import DataSourceConfig
+
+async def test_hyperliquid():
+    # Set your API key
+    os.environ['HYPERLIQUID_API_KEY'] = 'your_secret_key_here'
+
+    config = DataSourceConfig(
+        name='Hyperliquid',
+        base_url='https://api.hyperliquid.xyz',
+        api_key=os.getenv('HYPERLIQUID_API_KEY')
+    )
+
+    async with HyperliquidAdapter(config) as adapter:
+        # Test market data
+        data = await adapter.get_market_data('BTC')
+        print(f'BTC Price: ${data.price:,.2f}')
+        print(f'Confidence: {data.confidence:.1%}')
+
+        # Test health
+        healthy = await adapter.health_check()
+        print(f'API Health: {\"OK\" if healthy else \"Issues\"}')
+
+asyncio.run(test_hyperliquid())
+"
+
+# Hyperliquid WebSocket HFT Example
+python -c "
+import asyncio
+from colin_bot.v2.hft_engine.data_ingestion.connectors import HyperliquidConnector, HyperliquidConfig
+
+async def test_hyperliquid_websocket():
+    config = HyperliquidConfig(symbols=['BTC', 'ETH'])
+
+    async with HyperliquidConnector(config) as connector:
+        # Stream order book updates
+        async for order_book in connector.stream_order_book_updates('BTC'):
+            print(f'BTC Order Book - Bid: \${order_book.best_bid}, Ask: \${order_book.best_ask}')
+            print(f'Spread: \${order_book.spread}')
+            break  # Process first update
+
+asyncio.run(test_hyperliquid_websocket())
+"
 ```
 
 ### Validation Scripts
@@ -269,6 +418,7 @@ export DB_PASSWORD=your_password
 # API Keys
 export BINANCE_API_KEY=your_binance_api_key
 export BINANCE_API_SECRET=your_binance_secret
+export HYPERLIQUID_API_KEY=your_hyperliquid_secret_key
 
 # Security
 export JWT_SECRET_KEY=your_jwt_secret_key
